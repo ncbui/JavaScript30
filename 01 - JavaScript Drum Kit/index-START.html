@@ -59,6 +59,34 @@
 
 <script>
 
+
+function playSoundAndTransition(evt) {
+    const audio = document.querySelector(`audio[data-key="${evt.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${evt.keyCode}"]`);
+
+    // plays sounds; if audio already in progress, reset audio and play
+    if (!audio) return; 
+    audio.currentTime = 0; 
+    audio.play()
+
+    // animate key so it scales up and lights up
+    key.classList.add('playing');
+}
+
+// grabs list of all keys for removeTransition
+const keys = document.querySelectorAll('.key');
+
+// resets key after it is played
+function removeTransition(evt) {
+    if (evt.propertyName !== 'transform') return;
+    this.classList.remove('playing')
+}
+
+// on key down, play sounds
+window.addEventListener('keydown', playSoundAndTransition)
+
+// attaches eventListener to each key to reset it to original style after transition ends
+keys.forEach(key => key.addEventListener('transitionend', removeTransition));
 </script>
 
 
